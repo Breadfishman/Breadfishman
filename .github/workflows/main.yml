@@ -6,7 +6,7 @@ on:
 jobs:
   github-metrics:
     runs-on: ubuntu-latest
-    timeout-minutes: 20              # kills a hang instead of burning 6 hours
+    timeout-minutes: 20
     permissions:
       contents: write
     steps:
@@ -15,29 +15,40 @@ jobs:
           token: ${{ secrets.METRICS_TOKEN }}   # classic token w/ repo + read:org
           user: breadfishman
 
-          # --- Aggregate summary block (commit/PR/issue counts, repo counts) ---
+          # --- Aggregate summary block ---
           base: header, activity, community, repositories, metadata
 
-          # --- Pull in org-member repos so Numu counts toward the stats below ---
+          # --- Pull in org-member repos (Numu) so it counts toward stats ---
           repositories_affiliations: owner, collaborator, organization_member
-          commits_authoring: Breadfishman   # add your work commit email(s), comma-separated, so those commits attribute to you
+          commits_authoring: Breadfishman   # add work commit email(s), comma-separated
 
-          # --- Languages: aggregate percentages only, no code/filenames exposed ---
+          # --- Languages: default API algorithm (no cloning of private code) ---
           plugin_languages: yes
-          #plugin_languages_indepth: yes
           plugin_languages_sections: most-used
 
-          # --- Lines of code: aggregate total ONLY (no per-repo breakdown = no repo names) ---
+          # --- Lines of code: aggregate total only ---
           plugin_lines: yes
 
-          # --- Commit calendar: anonymous intensity squares ---
+          # --- Commit calendars ---
           plugin_isocalendar: yes
           plugin_isocalendar_duration: full-year
+          plugin_calendar: yes
+          plugin_calendar_limit: 0          # 0 = full commit history (all years)
 
-          # --- Issue/PR follow-up: aggregate open/closed counts ---
+          # --- Coding habits: active hours/days, charts, facts ---
+          plugin_habits: yes
+          plugin_habits_from: 200           # commits to analyze
+          plugin_habits_charts: yes
+          plugin_habits_facts: yes
+
+          # --- Achievements badges ---
+          plugin_achievements: yes
+          plugin_achievements_display: detailed
+          plugin_achievements_threshold: C  # C = show most; A = only rare
+
+          # --- Issue/PR follow-up: aggregate counts ---
           plugin_followup: yes
 
-          # ⚠️ INTENTIONALLY OFF — the activity FEED leaks repo names + PR/commit titles.
-          # Its visibility defaults to "all", so with the repo scope it would expose
-          # private Numu activity on your PUBLIC profile. Do not enable:
+          # ⚠️ INTENTIONALLY OFF — activity feed leaks repo names + PR/commit titles.
           # plugin_activity: yes
+          # ⚠️ Also leave plugin_code OFF — it would render private code snippets.
