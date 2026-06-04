@@ -24,7 +24,7 @@ jobs:
 
           # --- Languages: aggregate percentages only, no code/filenames exposed ---
           plugin_languages: yes
-          plugin_languages_indepth: yes
+          #plugin_languages_indepth: yes
           plugin_languages_sections: most-used
 
           # --- Lines of code: aggregate total ONLY (no per-repo breakdown = no repo names) ---
