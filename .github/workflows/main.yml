@@ -37,7 +37,7 @@ jobs:
 
           # --- Coding habits: active hours/days, charts, facts ---
           plugin_habits: yes
-          plugin_habits_from: 200           # commits to analyze
+          plugin_habits_from: 100           # commits to analyze
           plugin_habits_charts: no
           plugin_habits_facts: yes
 
